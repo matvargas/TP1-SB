@@ -1,0 +1,29 @@
+loadi A0 IO ; n-simo termo da sequencia
+loadi A1 _one
+loadi A2 _one
+loadi A3 _two
+loadi A6 _one
+_fib_1: loadi A7 _one
+subtract A7 A0 
+jmpz A7 _print_fib1
+_fib_2: loadi A7 _two
+subtract A7 A0
+jmpz A7 _print_fib1
+call _fibonacci_n
+jump _eop
+_print_fib1: storei A1 IO
+_eop: exit
+_fibonacci_n: add A4 A1
+add A4 A2
+move A2 A1
+move A1 A4
+clear A4
+subtract A0 A6
+subtract A3 A0
+jmpz A3 _finally
+loadi A3 _two
+jump _fibonacci_n
+_finally: storei A1 IO
+return
+_one:   .data 2 1
+_two:   .data 2 2
