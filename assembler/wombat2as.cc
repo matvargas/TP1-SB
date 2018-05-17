@@ -157,16 +157,18 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
         instruction = ((unsigned)(opcode) & 0x1F) << 11;
         switch(opcode) {
           // Instruction Format:
+          // 16 bits = 0
           // ------------------------------------------
           // | op: 5 | un: 11                         |
           // ------------------------------------------
-          case instruction::EXIT:
+          case instruction::STOP:
           case instruction::RETURN:
             break;
 
           // Instruction Format:
+          // Not used 3 bits or 11 bits of addr
           // ------------------------------------------
-          // | op: 5 | un: 3    | addr: 8             |
+          // | op: 5 | un: 3    | addr: [7-15]        |
           // ------------------------------------------
           case instruction::JUMP:
           case instruction::CALL:
@@ -197,23 +199,22 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
             break;
 
           // Instruction Format:
-          // ------------------------------------------
-          // | op: 5 | reg: 3   | un: 8               |
-          // ------------------------------------------
-          case instruction::CLEAR:
+          // ---------------------------------
+          // | op: 5 | un: 9  | addr: [14-15]|
+          // ---------------------------------
           case instruction::PUSH:
           case instruction::POP:
 						op1 = std::strtok(NULL, "\t ");
             if(op1 == NULL) {
-              std::fprintf(stderr, "exiting...\nerror: instruction: %s require one SFR's (A0...A7, IO) as operand\n"
+              std::fprintf(stderr, "exiting...\nerror: instruction: %s require one SFR's (A0...A3, IO) as operand\n"
                       "check again in: %s at line: %d\n", token, fname_in, linec);
           		std::free(line);
               wombat2_mif_destroy(wbt2);
               return;
             }
 
-            if(!check_if_valid_sfr(sfr_tbl, &instruction, op1, 8)) {
-              std::fprintf(stderr, "exiting...\nerror: operand is not a valid SFR (A0...A7, IO)\n"
+            if(!check_if_valid_sfr(sfr_tbl, &instruction, op1, 0)) {
+              std::fprintf(stderr, "exiting...\nerror: operand is not a valid SFR (A0...A3, IO)\n"
                       "check again in: %s at line: %d\n", fname_in, linec);
           		std::free(line);
               wombat2_mif_destroy(wbt2);
@@ -223,25 +224,27 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
  
           // Instruction Format:
           // ------------------------------------------
-          // | op: 5 | reg: 3   | addr: 8             |
+          // | op: 5 | reg: 2   | addr: 9             |
           // ------------------------------------------
-          case instruction::LOADI:
-          case instruction::STOREI:
+          //case instruction::LOADI: --- Muito Diferentes
+          //case instruction::STOREI: --- Muito Diferentes
+          case instruction::STORE:
+          case instruction::LOAD:
           case instruction::JMPZ:
           case instruction::JMPN:
 						op1 = std::strtok(NULL, "\t ");
 						op2 = std::strtok(NULL, "\t ");
             if(op1 == NULL || op2 == NULL) {
               std::fprintf(stderr, "exiting...\nerror: instruction: %s require two operands, " 
-                      "one SFR (A0...A7, IO) and one numeric literal or reachable label\n"
+                      "one SFR (A0...A3, IO) and one numeric literal or reachable label\n"
                       "check again in: %s at line: %d\n", token, fname_in, linec);
           		std::free(line);
               wombat2_mif_destroy(wbt2);
               return;
             }
 
-            if(!check_if_valid_sfr(sfr_tbl, &instruction, op1, 8)) {
-              std::fprintf(stderr, "exiting...\nerror: operand is not a valid SFR (A0...A7, IO)\n"
+            if(!check_if_valid_sfr(sfr_tbl, &instruction, op1, 9)) {
+              std::fprintf(stderr, "exiting...\nerror: operand is not a valid SFR (A0...A3, IO)\n"
                       "check again in: %s at line: %d\n", fname_in, linec);
           		std::free(line);
               wombat2_mif_destroy(wbt2);
@@ -267,22 +270,21 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
 
           // Instruction Format:
           // ------------------------------------------
-          // | op: 5 | reg: 3   | sqn: 8              |
+          // | op: 5 | reg: 2   | sqn: 9              |
           // ------------------------------------------
           case instruction::LOADC:
-          case instruction::ADDI:
 						op1 = strtok(NULL, "\t ");
 						op2 = strtok(NULL, "\t ");
             if(op1 == NULL || op2 == NULL) {
               std::fprintf(stderr, "exiting...\nerror: instruction: %s require two operands, " 
-                      "one SFR (A0...A7, IO) and one signed literal\n"
+                      "one SFR (A0...A3, IO) and one signed literal\n"
                       "check again in: %s at line: %d\n", token, fname_in, linec);
           		std::free(line);
               wombat2_mif_destroy(wbt2);
               return;
             }
 
-            if(!check_if_valid_sfr(sfr_tbl, &instruction, op1, 8)) {
+            if(!check_if_valid_sfr(sfr_tbl, &instruction, op1, 9)) {
               std::fprintf(stderr, "exiting...\nerror: operand is not a valid SFR (A0...A7, IO)\n"
                       "check again in: %s at line: %d\n", fname_in, linec);
           		std::free(line);
@@ -316,9 +318,6 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
           case instruction::MULTIPLY:
           case instruction::DIVIDE:
           case instruction::MOVE:
-          case instruction::LOAD:
-          case instruction::STORE:
-          case instruction::NEGATE:
 						op1 = strtok(NULL, "\t ");
             op2 = strtok(NULL, "\t ");
             if(op1 == NULL || op2 == NULL) {
