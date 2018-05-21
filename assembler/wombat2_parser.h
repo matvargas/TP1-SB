@@ -96,13 +96,11 @@
     };
 
     static const char *name_tbl[] __attribute__((unused)) = {
-      (char *)"stop",     (char *)"load",    (char *)"store",    (char *)"read",
-      (char *)"write",    (char *)"add",     (char *)"subtract", (char *)"multiply",
-      (char *)"divide",   (char *)"jump",    (char *)"jmpz",     (char *)"move",
-      (char *)"store",    (char *)"loadc",   (char *)"clear",    (char *)"negate",
-      (char *)"push",     (char *)"pop",     (char *)"call",     (char *)"return",
-      (char *)"load_s",   (char *)"store_s", (char *)"loadc",    (char *)"loadi",
-      (char *)"storei",   (char *)"copytop"
+      (char *)"stop",  (char *)"load",      (char *)"store",    (char *)"read",    (char *)"write", 
+      (char *)"add",   (char *)"subtract",  (char *)"multiply", (char *)"divide",  (char *)"jump",
+      (char *)"jmpz",  (char *)"jmpn",      (char *)"move",     (char *)"push",    (char *)"pop",
+      (char *)"call",  (char *)"return",    (char *)"load_s",   (char *)"store_s",  (char *)"loadc",
+      (char *)"loadi", (char *)"storei",    (char *)"copytop"
     };
 
     struct info_tbl_t {

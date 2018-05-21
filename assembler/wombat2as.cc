@@ -139,7 +139,6 @@ void pass_one (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tbl,
 void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sfr_tbl, 
                pseudo_inst_dict_t *pseudo_inst_tbl, const char *fname_in, 
                file_t *file_in, const char *fname_out) {
-
   unsigned instruction;
   int opcode, aux, addr_c = 0, linec = 1;
   char *line, *token, *op1, *op2;
@@ -152,7 +151,6 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
 			if(token[0] == ';') {
 				break;
 			}
-
       if((opcode = get_opcode_param_by_name(opcode_tb, token, 0)) != -1) {
         //Get instruction opcode on 5 first bits
         instruction = ((unsigned)(opcode) & 0x1F) << 11;
@@ -205,6 +203,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
           // ---------------------------------
           case instruction::PUSH:
           case instruction::POP:
+            std::printf("Entrei aqui");
 						op1 = std::strtok(NULL, "\t ");
             if(op1 == NULL) {
               std::fprintf(stderr, "exiting...\nerror: instruction: %s require one SFR's (A0...A3) as operand\n"
