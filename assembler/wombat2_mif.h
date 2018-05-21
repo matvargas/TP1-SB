@@ -27,4 +27,7 @@
   // Destroy a mif (Memory Initialization File) file:
   void wombat2_mif_destroy(wbt2_mif_t *wbt2);
 
+  // Convert hexadecimal to Binary string to print:
+  char *print_me(char *buff, int data);
+
 #endif // WOMBAT2_MIF_H

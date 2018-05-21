@@ -1,6 +1,11 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <string>
+#include <sstream>
+#include <bitset>
+#include <fstream>
+#include <iostream>
 #include "wombat2_mif.h"
 
 //-----------------------------------------------------------------------------
@@ -30,7 +35,8 @@ wbt2_mif_t *wombat2_mif_create (const char *filepath, const char *filemode,
 wbt2_mif_t *wombat2_mif_write(wbt2_mif_t *wbt2, int address, int data, char *comment) {
   // TODO: Put assembly program comment line into the output file!
   comment = comment; // makes compiler happy!
-  std::fprintf(wbt2->fstream, "%02X : %02X;\n", address, data);
+  char bin_data[9] = {'\0'};
+  std::fprintf(wbt2->fstream, "%02X : %s;\n", address, print_me(bin_data, data));
   wbt2->last_addr = address + 1;
   return NULL;
 }
@@ -42,10 +48,39 @@ void wombat2_mif_destroy(wbt2_mif_t *wbt2) {
   // Fill not used memory with constant:
   const unsigned char UNUSED_DATA = 0x00;
   while(wbt2->last_addr < wbt2->depth) {
-    std::fprintf(wbt2->fstream, "%02X : %02X;\n", wbt2->last_addr++, UNUSED_DATA);
+    std::fprintf(wbt2->fstream, "%02X : %d;\n", wbt2->last_addr++, UNUSED_DATA);
   }
   std::fprintf(wbt2->fstream, "END;");
   std::fclose(wbt2->fstream);
   std::free(wbt2);
 }
 
+//-----------------------------------------------------------------------------
+// Convert hexadecimal to Binary string to print:
+//-----------------------------------------------------------------------------
+char *print_me(char *buff, int data) {
+  
+  for(int i = 0; i < 2; i++) {
+    switch((data & 0xF0)>>4) {
+              case 0x0: strcat(buff, "0000"); break;
+              case 0x1: strcat(buff, "0001"); break;
+              case 0x2: strcat(buff, "0010"); break;
+              case 0x3: strcat(buff, "0011"); break;
+              case 0x4: strcat(buff, "0100"); break;
+              case 0x5: strcat(buff, "0101"); break;
+              case 0x6: strcat(buff, "0110"); break;
+              case 0x7: strcat(buff, "0111"); break;
+              case 0x8: strcat(buff, "1000"); break;
+              case 0x9: strcat(buff, "1001"); break;
+              case 0xA: strcat(buff, "1010"); break;
+              case 0xB: strcat(buff, "1011"); break;
+              case 0xC: strcat(buff, "1100"); break;
+              case 0xD: strcat(buff, "1101"); break;
+              case 0xE: strcat(buff, "1110"); break;
+              case 0xF: strcat(buff, "1111"); break;
+              default: break;
+          }
+    data <<= 4;
+  }
+  return buff;
+}

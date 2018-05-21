@@ -145,7 +145,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
   char *line, *token, *op1, *op2;
   fname_in = fname_in;                    // makes compiler happy!
 	std::fseek(file_in, 0, SEEK_SET);
-  wbt2_mif_t *wbt2 = wombat2_mif_create(fname_out, "w+", 256, 8, HEX_RADIX, HEX_RADIX);
+  wbt2_mif_t *wbt2 = wombat2_mif_create(fname_out, "w+", 128, 8, HEX_RADIX, BIN_RADIX);
 	while((line = get_next_line(file_in))) {
 		token = std::strtok(line, "\t ");
     while(token) {
@@ -206,7 +206,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
           case instruction::POP:
 						op1 = std::strtok(NULL, "\t ");
             if(op1 == NULL) {
-              std::fprintf(stderr, "exiting...\nerror: instruction: %s require one SFR's (A0...A3, IO) as operand\n"
+              std::fprintf(stderr, "exiting...\nerror: instruction: %s require one SFR's (A0...A3) as operand\n"
                       "check again in: %s at line: %d\n", token, fname_in, linec);
           		std::free(line);
               wombat2_mif_destroy(wbt2);
@@ -214,7 +214,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
             }
 
             if(!check_if_valid_sfr(sfr_tbl, &instruction, op1, 0)) {
-              std::fprintf(stderr, "exiting...\nerror: operand is not a valid SFR (A0...A3, IO)\n"
+              std::fprintf(stderr, "exiting...\nerror: operand is not a valid SFR (A0...A3)\n"
                       "check again in: %s at line: %d\n", fname_in, linec);
           		std::free(line);
               wombat2_mif_destroy(wbt2);
