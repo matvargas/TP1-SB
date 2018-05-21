@@ -43,11 +43,6 @@
 
   // Special Function Registers (SFR) tables:
   namespace sfr {
-    // enum opcode_t {
-    //   A0 = 0, A1 = 1, A2 = 2, A3 = 3, 
-    //   A4 = 4, A5 = 5, A6 = 6, A7 = 7, 
-    //   IO = 254      
-    // };
 
     enum opcode_t {
       A0 = 0, 
@@ -56,19 +51,9 @@
       A3 = 3
     };
   
-    // static const opcode_t opcode_tbl[] = {
-    //   A0, A1, A2, A3, A4, A5, A6, A7, IO      
-    // };
-
     static const opcode_t opcode_tbl[] = {
       A0, A1, A2, A3
     };
-
-    // static const char *name_tbl[] __attribute__((unused)) = {
-    //   (char *)"A0", (char *)"A1", (char *)"A2", (char *)"A3",
-    //   (char *)"A4", (char *)"A5", (char *)"A6", (char *)"A7",
-    //   (char *)"IO"
-    // };
 
     static const char *name_tbl[] __attribute__((unused)) = {
       (char *)"A0", 
@@ -82,12 +67,6 @@
       int length;         // register length 
     };
 
-    // const info_tbl_t info_tbl[] = {
-    //   {A0, 2}, {A1, 2}, {A2, 2}, {A3, 2}, 
-    //   {A4, 2}, {A5, 2}, {A6, 2}, {A7, 2}, 
-    //   {IO, 2}   
-    // };
-
     const info_tbl_t info_tbl[] = {
       {A0, 2}, 
       {A1, 2}, 
@@ -98,15 +77,6 @@
 
   // Instructions tables:
   namespace instruction {
-    // enum opcode_t {
-    //   EXIT = 0,   LOADI,    STOREI,    ADD,
-    //   SUBTRACT,   MULTIPLY, DIVIDE,    JUMP,
-    //   JMPZ,       JMPN,     MOVE,      LOAD,
-    //   STORE,      LOADC,    CLEAR,     NEGATE,
-    //   PUSH,       POP,      ADDI,      CALL, 
-    //   RETURN
-    // };
-
     enum opcode_t {
       STOP = 0,  LOAD,     STORE,    READ,    WRITE,
       ADD,       SUBTRACT, MULTIPLY, DIVIDE,
@@ -115,15 +85,6 @@
       LOADS,     STORES,   LOADC,    LOADI,
       STOREI,    COPYTOP
    };
-
-    // static const opcode_t opcode_tbl[] = {
-    //   EXIT,       LOADI,    STOREI,    ADD,
-    //   SUBTRACT,   MULTIPLY, DIVIDE,    JUMP,
-    //   JMPZ,       JMPN,     MOVE,      LOAD,
-    //   STORE,      LOADC,    CLEAR,     NEGATE,
-    //   PUSH,       POP,      ADDI,      CALL, 
-    //   RETURN
-    // };
 
     static const opcode_t opcode_tbl[] = {
       STOP,      LOAD,     STORE,    READ,    WRITE,
@@ -134,24 +95,13 @@
       STOREI,    COPYTOP
     };
 
-/**
     static const char *name_tbl[] __attribute__((unused)) = {
-      (char *)"exit",     (char *)"loadi",    (char *)"storei", (char *)"add",
-      (char *)"subtract", (char *)"multiply", (char *)"divide", (char *)"jump",
-      (char *)"jmpz",     (char *)"jmpn",     (char *)"move",   (char *)"load",
-      (char *)"store",    (char *)"loadc",    (char *)"clear",  (char *)"negate",
-      (char *)"push",     (char *)"pop",      (char *)"addi",   (char *)"call",
-      (char *)"return"
-    };
-**/
-
-    static const char *name_tbl[] __attribute__((unused)) = {
-      (char *)"stop",     (char *)"load",    (char *)"store", (char *)"read",
+      (char *)"stop",     (char *)"load",    (char *)"store",    (char *)"read",
       (char *)"write",    (char *)"add",     (char *)"subtract", (char *)"multiply",
-      (char *)"divide",   (char *)"jump",    (char *)"jmpz",   (char *)"move",
-      (char *)"store",    (char *)"loadc",   (char *)"clear",  (char *)"negate",
-      (char *)"push",     (char *)"pop",     (char *)"call",   (char *)"return",
-      (char *)"load_s",   (char *)"store_s", (char *)"loadc",  (char *)"loadi",
+      (char *)"divide",   (char *)"jump",    (char *)"jmpz",     (char *)"move",
+      (char *)"store",    (char *)"loadc",   (char *)"clear",    (char *)"negate",
+      (char *)"push",     (char *)"pop",     (char *)"call",     (char *)"return",
+      (char *)"load_s",   (char *)"store_s", (char *)"loadc",    (char *)"loadi",
       (char *)"storei",   (char *)"copytop"
     };
 
@@ -160,17 +110,6 @@
       int ilength;        // instruction length (in bytes)
       int noper;          // number of operands
     };
-
-    /**
-    const info_tbl_t info_tbl[] __attribute__((unused)) = {
-      {EXIT,      2,  0}, {LOADI,    2,  2}, {STOREI,  2,  2}, {ADD,     2,  2}, 
-      {SUBTRACT,  2,  2}, {MULTIPLY, 2,  2}, {DIVIDE,  2,  2}, {JUMP,    2,  1},	
-      {JMPZ,      2,  2}, {JMPN,     2,  2}, {MOVE,    2,  2}, {LOAD,    2,  2},
-      {STORE,     2,  2}, {LOADC,    2,  2}, {CLEAR,   2,  1}, {NEGATE,  2,  2},
-      {PUSH,      2,  1}, {POP,      2,  1}, {ADDI,    2,  2}, {CALL,    2,  1},	
-      {RETURN,    2,  0}
-    };
-     **/
 
     const info_tbl_t info_tbl[] __attribute__((unused)) = {
       {STOP,   2,  0}, {LOAD,   2,  2}, {STORE,     2,  2}, {READ,     2,  1},

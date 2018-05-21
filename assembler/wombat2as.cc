@@ -286,7 +286,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
             }
 
             if(!check_if_valid_sfr(sfr_tbl, &instruction, op1, 9)) {
-              std::fprintf(stderr, "exiting...\nerror: operand is not a valid SFR (A0...A4)\n"
+              std::fprintf(stderr, "exiting...\nerror: operand is not a valid SFR (A0...A3)\n"
                       "check again in: %s at line: %d\n", fname_in, linec);
           		std::free(line);
               wombat2_mif_destroy(wbt2);
@@ -312,7 +312,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
 
           // Instruction Format:
           // ------------------------------------------
-          // | op: 5 | reg: 3   | reg: 3   | un: 5    |
+          // | op: 5 | reg: 2   | reg: 7 uses [14-15] |
           // ------------------------------------------
           case instruction::ADD:
           case instruction::SUBTRACT:
@@ -322,23 +322,23 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
 						op1 = strtok(NULL, "\t ");
             op2 = strtok(NULL, "\t ");
             if(op1 == NULL || op2 == NULL) {
-              std::fprintf(stderr, "exiting...\nerror: instruction: %s require two SFR's (A0...A4) as operands\n"
+              std::fprintf(stderr, "exiting...\nerror: instruction: %s require two SFR's (A0...A3) as operands\n"
                       "check again in: %s at line: %d\n", token, fname_in, linec);
           		std::free(line);
               wombat2_mif_destroy(wbt2);
               return;
             }
 
-            if(!check_if_valid_sfr(sfr_tbl, &instruction, op1, 8)) {
-              std::fprintf(stderr, "exiting...\nerror: first operand is not a valid SFR (A0...A4)\n"
+            if(!check_if_valid_sfr(sfr_tbl, &instruction, op1, 7)) {
+              std::fprintf(stderr, "exiting...\nerror: first operand is not a valid SFR (A0...A3)\n"
                       "check again in: %s at line: %d\n", fname_in, linec);
           		std::free(line);
               wombat2_mif_destroy(wbt2);
               return;
             }
 
-            if(!check_if_valid_sfr(sfr_tbl, &instruction, op2, 5)) {
-              std::fprintf(stderr, "exiting...\nerror: second operand is not a valid SFR (A0...A4)\n"
+            if(!check_if_valid_sfr(sfr_tbl, &instruction, op2, 0)) {
+              std::fprintf(stderr, "exiting...\nerror: second operand is not a valid SFR (A0...A3)\n"
                       "check again in: %s at line: %d\n", fname_in, linec);
           		std::free(line);
               wombat2_mif_destroy(wbt2);
