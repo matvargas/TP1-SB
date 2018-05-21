@@ -184,11 +184,11 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
 
             if(!check_if_valid_literal_num(&instruction, op1, 0)) {
               if((aux = get_symbol_tbl_address(symbol_tbl, op1)) != -1) {
-                instruction |= (unsigned)(aux) & 0xFF;
+                instruction |= (unsigned)(aux) & 0x7F;
               }else if((aux = get_sfr_param_by_name(sfr_tbl, op1, 0)) != -1) {
-                instruction |= (unsigned)(aux) & 0xFF;
+                instruction |= (unsigned)(aux) & 0x7F;
               }else if((aux = get_pseudo_inst_tbl_address(pseudo_inst_tbl, op1)) != -1) {
-                instruction |= (unsigned)(aux) & 0xFF;
+                instruction |= (unsigned)(aux) & 0x7F;
               }else {
                 std::fprintf(stderr, "exiting...\nerror: operand is not a valid numeric literal or reachable label\n"
                         "check again in: %s at line: %d\n", fname_in, linec);
@@ -227,8 +227,6 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
           // ------------------------------------------
           // | op: 5 | reg: 2   | addr: 9             |
           // ------------------------------------------
-          //case instruction::LOADI: --- Muito Diferentes
-          //case instruction::STOREI: --- Muito Diferentes
           case instruction::STORE:
           case instruction::LOAD:
           case instruction::JMPZ:
@@ -273,7 +271,11 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
           // ------------------------------------------
           // | op: 5 | reg: 2   | sqn: 9              |
           // ------------------------------------------
+          case instruction::LOADS:
+          case instruction::STORES:
           case instruction::LOADC:
+          case instruction::LOADI:
+          case instruction::STOREI:
 						op1 = strtok(NULL, "\t ");
 						op2 = strtok(NULL, "\t ");
             if(op1 == NULL || op2 == NULL) {
@@ -312,7 +314,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
 
           // Instruction Format:
           // ------------------------------------------
-          // | op: 5 | reg: 2   | reg: 7 uses [14-15] |
+          // | op: 5 | reg: 2   | reg: 9 uses [14-15] |
           // ------------------------------------------
           case instruction::ADD:
           case instruction::SUBTRACT:
@@ -351,6 +353,29 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
           // | op: 5 | reg: 11  uses less significative bits [14-15] |
           // ---------------------------------------------------------
           case instruction::READ:
+            op1 = std::strtok(NULL, "\t ");
+            if(op1 == NULL) {
+              std::fprintf(stderr, "exiting...\nerror: instruction: %s require one SFR's (A0...A3) as operand\n"
+                      "check again in: %s at line: %d\n", token, fname_in, linec);
+          		std::free(line);
+              wombat2_mif_destroy(wbt2);
+              return;
+            }
+
+            if(!check_if_valid_sfr(sfr_tbl, &instruction, op1, 0)) {
+              std::fprintf(stderr, "exiting...\nerror: operand is not a valid SFR (A0...A3)\n"
+                      "check again in: %s at line: %d\n", fname_in, linec);
+          		std::free(line);
+              wombat2_mif_destroy(wbt2);
+              return;
+            }
+            break;
+
+          // Instruction Format:
+          // ---------------------------------------------------------
+          // | op: 5 | reg: 11                                       |
+          // ---------------------------------------------------------
+          case instruction::WRITE:
             op1 = std::strtok(NULL, "\t ");
             if(op1 == NULL) {
               std::fprintf(stderr, "exiting...\nerror: instruction: %s require one SFR's (A0...A3) as operand\n"
