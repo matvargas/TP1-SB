@@ -53,8 +53,7 @@
       A0 = 0, 
       A1 = 1, 
       A2 = 2, 
-      A3 = 3,
-      IO = 254
+      A3 = 3
     };
   
     // static const opcode_t opcode_tbl[] = {
@@ -62,7 +61,7 @@
     // };
 
     static const opcode_t opcode_tbl[] = {
-      A0, A1, A2, A3, IO
+      A0, A1, A2, A3
     };
 
     // static const char *name_tbl[] __attribute__((unused)) = {
@@ -75,8 +74,7 @@
       (char *)"A0", 
       (char *)"A1", 
       (char *)"A2", 
-      (char *)"A3",
-      (char *)"IO"
+      (char *)"A3"
     };
 
     struct info_tbl_t {
@@ -94,8 +92,7 @@
       {A0, 2}, 
       {A1, 2}, 
       {A2, 2}, 
-      {A3, 2},
-      {IO, 2}
+      {A3, 2}
     };
   }
 

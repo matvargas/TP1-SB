@@ -8,7 +8,7 @@
 bool check_if_valid_sfr (sfr_tbl_t *sfr_tbl, unsigned *num, 
                          char *str_op, unsigned displacement) {
   int aux;
-  if((aux = get_sfr_param_by_name(sfr_tbl, str_op, 0)) != -1) {
+  if((aux = get_sfr_param_by_name(sfr_tbl, str_op, 0)) != -1) { 
     *num |= (unsigned)aux << displacement;
     return true;
   }
