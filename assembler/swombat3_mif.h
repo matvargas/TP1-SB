@@ -1,5 +1,5 @@
-#ifndef WOMBAT2_MIF_H
-  #define WOMBAT2_MIF_H
+#ifndef SWOMBAT3_MIF_H
+  #define SWOMBAT3_MIF_H
 
 	typedef FILE file_t;
 
@@ -14,20 +14,20 @@
     wbt2_radix_t addr_radix;
     wbt2_radix_t data_radix;
     file_t *fstream;
-  } wbt2_mif_t;
+  } swbt3_mif_t;
 
   // Create a mif (Memory Initialization File) file:
-  wbt2_mif_t *wombat2_mif_create (const char *filepath, const char *filemode,
+  swbt3_mif_t *swombat3_mif_create (const char *filepath, const char *filemode,
                                   int depth, int width, wbt2_radix_t addr_radix,
                                   wbt2_radix_t data_radix);
 
   // Write in a mif (Memory Initialization File) file:
-  wbt2_mif_t *wombat2_mif_write(wbt2_mif_t *wbt2, int address, int data, char *comment);
+  swbt3_mif_t *swombat3_mif_write(swbt3_mif_t *wbt2, int address, int data, char *comment);
 
   // Destroy a mif (Memory Initialization File) file:
-  void wombat2_mif_destroy(wbt2_mif_t *wbt2);
+  void swombat3_mif_destroy(swbt3_mif_t *wbt2);
 
   // Convert hexadecimal to Binary string to print:
   char *print_me(char *buff, int data);
 
-#endif // WOMBAT2_MIF_H
+#endif // SWOMBAT3_MIF_H

@@ -1,5 +1,5 @@
-#ifndef WOMBAT2_PARSER_H
-  #define WOMBAT2_PARSER_H
+#ifndef SWOMBAT3_PARSER_H
+  #define SWOMBAT3_PARSER_H
 
   #include <cstdio>
   #include <cstdlib>
@@ -208,4 +208,4 @@
 
   bool is_valid_lpseudo_instruction (const char *pseudoinst);
 
-#endif // WOMBAT2_PARSER_H
+#endif // SWOMBAT3_PARSER_H
