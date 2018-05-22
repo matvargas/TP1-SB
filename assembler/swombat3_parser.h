@@ -99,7 +99,7 @@
       (char *)"stop",  (char *)"load",      (char *)"store",    (char *)"read",    (char *)"write", 
       (char *)"add",   (char *)"subtract",  (char *)"multiply", (char *)"divide",  (char *)"jump",
       (char *)"jmpz",  (char *)"jmpn",      (char *)"move",     (char *)"push",    (char *)"pop",
-      (char *)"call",  (char *)"return",    (char *)"load_s",   (char *)"store_s",  (char *)"loadc",
+      (char *)"call",  (char *)"return",    (char *)"load_s",   (char *)"store_s",  (char *)"load_c",
       (char *)"loadi", (char *)"storei",    (char *)"copytop"
     };
 

@@ -1,0 +1,15 @@
+ read A1
+  load A0 _one
+  load A2 _one
+  call _fat_n
+  stop
+_fat_n: jmpz A1 _fat_zero
+  push A1
+  subtract A1 A2
+  pop A3
+  multiply A0 A3
+  call _fat_n
+  return
+_fat_zero: write A0
+  return
+_one:   .data 2 1

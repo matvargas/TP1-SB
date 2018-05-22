@@ -1,0 +1,14 @@
+load_c A0 -1
+load A2 _const
+read A1
+subtract A1 A0
+push A1
+call _multiply
+_printMultiplyResult: load_s A1 2 
+                                  write A1
+_stop: stop
+_multiply: pop A0
+                multiply A2 A0
+                store_s A2 2
+call _printMultiplyResult
+_const: .data 2 5

@@ -1,0 +1,20 @@
+read A0           ; read n
+        read A1           ; read m
+
+        move A1 A2        ; copy A1 into A2
+        move A0 A1
+        load A3 _one      ; A3 = 1
+        subtract A2 A3    ; A2-- 
+        
+        jump _Start       ; start
+        
+_Start: jmpz A2 _End      ; if A2 = 0, finish
+        add A0 A1         ; add m to n
+        load A3 _one      ; A3 = 1
+        subtract A2 A3    ; A2--
+        jump _Start       ; start to add again
+
+_End:   write A0          ; write output to console
+        stop              ; finish execution
+
+_one:   .data 2 1         ; constant 1
