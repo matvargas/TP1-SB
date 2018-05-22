@@ -1,6 +1,6 @@
-#include "wombat2_parser.h"
-#include "wombat2as.h"
-#include "wombat2_mif.h"
+#include "swombat3_parser.h"
+#include "swombat3as.h"
+#include "swombat3_mif.h"
 
 //-----------------------------------------------------------------------------
 // Checks whether it is a valid SFR (Special Function Register):
@@ -144,7 +144,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
   char *line, *token, *op1, *op2;
   fname_in = fname_in;                    // makes compiler happy!
 	std::fseek(file_in, 0, SEEK_SET);
-  wbt2_mif_t *wbt2 = wombat2_mif_create(fname_out, "w+", 128, 8, HEX_RADIX, BIN_RADIX);
+  swbt3_mif_t *wbt2 = swombat3_mif_create(fname_out, "w+", 128, 8, HEX_RADIX, BIN_RADIX);
 	while((line = get_next_line(file_in))) {
 		token = std::strtok(line, "\t ");
     while(token) {
@@ -176,22 +176,22 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
               std::fprintf(stderr, "exiting...\nerror: instruction: %s require one numeric literal or a reachable label as operand\n"
                       "check again in: %s at line: %d\n", token, fname_in, linec);
           		std::free(line);
-              wombat2_mif_destroy(wbt2);
+              swombat3_mif_destroy(wbt2);
               return;
             }
 
             if(!check_if_valid_literal_num(&instruction, op1, 0)) {
               if((aux = get_symbol_tbl_address(symbol_tbl, op1)) != -1) {
-                instruction |= (unsigned)(aux) & 0x7F;
+                instruction |= (unsigned)(aux) & 0xFF;
               }else if((aux = get_sfr_param_by_name(sfr_tbl, op1, 0)) != -1) {
-                instruction |= (unsigned)(aux) & 0x7F;
+                instruction |= (unsigned)(aux) & 0xFF;
               }else if((aux = get_pseudo_inst_tbl_address(pseudo_inst_tbl, op1)) != -1) {
-                instruction |= (unsigned)(aux) & 0x7F;
+                instruction |= (unsigned)(aux) & 0xFF;
               }else {
                 std::fprintf(stderr, "exiting...\nerror: operand is not a valid numeric literal or reachable label\n"
                         "check again in: %s at line: %d\n", fname_in, linec);
             		std::free(line);
-                wombat2_mif_destroy(wbt2);
+                swombat3_mif_destroy(wbt2);
                 return;
               }
             }
@@ -203,13 +203,12 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
           // ---------------------------------
           case instruction::PUSH:
           case instruction::POP:
-            std::printf("Entrei aqui");
 						op1 = std::strtok(NULL, "\t ");
             if(op1 == NULL) {
               std::fprintf(stderr, "exiting...\nerror: instruction: %s require one SFR's (A0...A3) as operand\n"
                       "check again in: %s at line: %d\n", token, fname_in, linec);
           		std::free(line);
-              wombat2_mif_destroy(wbt2);
+              swombat3_mif_destroy(wbt2);
               return;
             }
 
@@ -217,7 +216,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
               std::fprintf(stderr, "exiting...\nerror: operand is not a valid SFR (A0...A3)\n"
                       "check again in: %s at line: %d\n", fname_in, linec);
           		std::free(line);
-              wombat2_mif_destroy(wbt2);
+              swombat3_mif_destroy(wbt2);
               return;
             }
             break;
@@ -237,7 +236,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
                       "one SFR (A0...A3) and one numeric literal or reachable label\n"
                       "check again in: %s at line: %d\n", token, fname_in, linec);
           		std::free(line);
-              wombat2_mif_destroy(wbt2);
+              swombat3_mif_destroy(wbt2);
               return;
             }
 
@@ -245,7 +244,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
               std::fprintf(stderr, "exiting...\nerror: operand is not a valid SFR (A0...A3)\n"
                       "check again in: %s at line: %d\n", fname_in, linec);
           		std::free(line);
-              wombat2_mif_destroy(wbt2);
+              swombat3_mif_destroy(wbt2);
               return;
             }
 
@@ -260,7 +259,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
                 std::fprintf(stderr, "exiting...\nerror: operand is not a valid numeric literal or reachable label\n"
                         "check again in: %s at line: %d\n", fname_in, linec);
             		std::free(line);
-                wombat2_mif_destroy(wbt2);
+                swombat3_mif_destroy(wbt2);
                 return;
               }
             }
@@ -282,7 +281,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
                       "one SFR (A0...A3) and one signed literal\n"
                       "check again in: %s at line: %d\n", token, fname_in, linec);
           		std::free(line);
-              wombat2_mif_destroy(wbt2);
+              swombat3_mif_destroy(wbt2);
               return;
             }
 
@@ -290,7 +289,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
               std::fprintf(stderr, "exiting...\nerror: operand is not a valid SFR (A0...A3)\n"
                       "check again in: %s at line: %d\n", fname_in, linec);
           		std::free(line);
-              wombat2_mif_destroy(wbt2);
+              swombat3_mif_destroy(wbt2);
               return;
             }
 
@@ -305,7 +304,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
                 std::fprintf(stderr, "exiting...\nerror: operand is not a valid numeric literal or reachable label\n"
                         "check again in: %s at line: %d\n", fname_in, linec);
             		std::free(line);
-                wombat2_mif_destroy(wbt2);
+                swombat3_mif_destroy(wbt2);
                 return;
               }
             }
@@ -326,15 +325,15 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
               std::fprintf(stderr, "exiting...\nerror: instruction: %s require two SFR's (A0...A3) as operands\n"
                       "check again in: %s at line: %d\n", token, fname_in, linec);
           		std::free(line);
-              wombat2_mif_destroy(wbt2);
+              swombat3_mif_destroy(wbt2);
               return;
             }
 
-            if(!check_if_valid_sfr(sfr_tbl, &instruction, op1, 7)) {
+            if(!check_if_valid_sfr(sfr_tbl, &instruction, op1, 9)) {
               std::fprintf(stderr, "exiting...\nerror: first operand is not a valid SFR (A0...A3)\n"
                       "check again in: %s at line: %d\n", fname_in, linec);
           		std::free(line);
-              wombat2_mif_destroy(wbt2);
+              swombat3_mif_destroy(wbt2);
               return;
             }
 
@@ -342,7 +341,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
               std::fprintf(stderr, "exiting...\nerror: second operand is not a valid SFR (A0...A3)\n"
                       "check again in: %s at line: %d\n", fname_in, linec);
           		std::free(line);
-              wombat2_mif_destroy(wbt2);
+              swombat3_mif_destroy(wbt2);
               return;
             }
             break;
@@ -357,7 +356,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
               std::fprintf(stderr, "exiting...\nerror: instruction: %s require one SFR's (A0...A3) as operand\n"
                       "check again in: %s at line: %d\n", token, fname_in, linec);
           		std::free(line);
-              wombat2_mif_destroy(wbt2);
+              swombat3_mif_destroy(wbt2);
               return;
             }
 
@@ -365,7 +364,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
               std::fprintf(stderr, "exiting...\nerror: operand is not a valid SFR (A0...A3)\n"
                       "check again in: %s at line: %d\n", fname_in, linec);
           		std::free(line);
-              wombat2_mif_destroy(wbt2);
+              swombat3_mif_destroy(wbt2);
               return;
             }
             break;
@@ -380,7 +379,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
               std::fprintf(stderr, "exiting...\nerror: instruction: %s require one SFR's (A0...A3) as operand\n"
                       "check again in: %s at line: %d\n", token, fname_in, linec);
           		std::free(line);
-              wombat2_mif_destroy(wbt2);
+              swombat3_mif_destroy(wbt2);
               return;
             }
 
@@ -388,7 +387,7 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
               std::fprintf(stderr, "exiting...\nerror: operand is not a valid SFR (A0...A3)\n"
                       "check again in: %s at line: %d\n", fname_in, linec);
           		std::free(line);
-              wombat2_mif_destroy(wbt2);
+              swombat3_mif_destroy(wbt2);
               return;
             }
             break;
@@ -396,8 +395,8 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
           default: 
             break;
         }
-        wombat2_mif_write(wbt2, addr_c++, (instruction & 0xFF00) >> 8, NULL);
-        wombat2_mif_write(wbt2, addr_c++, instruction & 0xFF, NULL);
+        swombat3_mif_write(wbt2, addr_c++, (instruction & 0xFF00) >> 8, NULL);
+        swombat3_mif_write(wbt2, addr_c++, instruction & 0xFF, NULL);
 
 			}
 			token = strtok(NULL, "\t ");
@@ -448,12 +447,12 @@ void pass_two (symbol_dict_t *symbol_tbl, opcode_tbl_t *opcode_tb, sfr_tbl_t *sf
       }
 
       for(int i = pseudo_inst->nbytes - 1; i >= 0; i--) {
-        wombat2_mif_write(wbt2, addr++, data_arr[i], NULL);
+        swombat3_mif_write(wbt2, addr++, data_arr[i], NULL);
       }
     }
     pseudo_inst->arglst.clear();
   }
   argv_lst.clear();
-  wombat2_mif_destroy(wbt2);
+  swombat3_mif_destroy(wbt2);
 }
 

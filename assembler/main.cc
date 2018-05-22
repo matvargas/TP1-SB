@@ -3,8 +3,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <stdexcept>
-#include "wombat2_parser.h"
-#include "wombat2as.h"
+#include "swombat3_parser.h"
+#include "swombat3as.h"
 
 //-----------------------------------------------------------------------------
 // main function:

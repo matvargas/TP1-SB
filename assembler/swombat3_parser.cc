@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <cctype>
 #include <cstring>
-#include "wombat2_parser.h"
+#include "swombat3_parser.h"
 
 //-----------------------------------------------------------------------------
 // Checks whether it is a valid binary number:

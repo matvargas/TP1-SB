@@ -6,16 +6,16 @@
 #include <bitset>
 #include <fstream>
 #include <iostream>
-#include "wombat2_mif.h"
+#include "swombat3_mif.h"
 
 //-----------------------------------------------------------------------------
 // Create a mif (Memory Initialization File) file:
 //-----------------------------------------------------------------------------
-wbt2_mif_t *wombat2_mif_create (const char *filepath, const char *filemode, 
+swbt3_mif_t *swombat3_mif_create (const char *filepath, const char *filemode, 
                                 int depth, int width, wbt2_radix_t addr_radix,
                                 wbt2_radix_t data_radix) {
   // TODO: check allocation and file open!
-  wbt2_mif_t *wbt2 = (wbt2_mif_t *)malloc(sizeof(wbt2_mif_t));
+  swbt3_mif_t *wbt2 = (swbt3_mif_t *)malloc(sizeof(swbt3_mif_t));
   wbt2->fstream    = std::fopen(filepath, filemode);
   wbt2->depth      = depth;
   wbt2->width      = width;
@@ -32,7 +32,7 @@ wbt2_mif_t *wombat2_mif_create (const char *filepath, const char *filemode,
 //-----------------------------------------------------------------------------
 // Write in a mif (Memory Initialization File) file:
 //-----------------------------------------------------------------------------
-wbt2_mif_t *wombat2_mif_write(wbt2_mif_t *wbt2, int address, int data, char *comment) {
+swbt3_mif_t *swombat3_mif_write(swbt3_mif_t *wbt2, int address, int data, char *comment) {
   // TODO: Put assembly program comment line into the output file!
   comment = comment; // makes compiler happy!
   char bin_data[9] = {'\0'};
@@ -44,7 +44,7 @@ wbt2_mif_t *wombat2_mif_write(wbt2_mif_t *wbt2, int address, int data, char *com
 //-----------------------------------------------------------------------------
 // Destroy a mif (Memory Initialization File) file:
 //-----------------------------------------------------------------------------
-void wombat2_mif_destroy(wbt2_mif_t *wbt2) {
+void swombat3_mif_destroy(swbt3_mif_t *wbt2) {
   // Fill not used memory with constant:
   const unsigned char UNUSED_DATA = 0x00;
   while(wbt2->last_addr < wbt2->depth) {
